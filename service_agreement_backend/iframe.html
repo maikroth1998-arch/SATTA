@@ -1,0 +1,1847 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Service Contract Hours</title>
+  <script src="https://static.zdassets.com/zendesk_app_framework_sdk/2.0/zaf_sdk.min.js"></script>
+  <style>
+    :root {
+      --surface: #ffffff;
+      --surface-soft: #f8fafc;
+      --surface-muted: #f1f5f9;
+      --text: #0f172a;
+      --text-soft: #475569;
+      --text-muted: #64748b;
+      --line: #e2e8f0;
+      --line-strong: #cbd5e1;
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --primary-soft: #dbeafe;
+      --success: #15803d;
+      --success-soft: #dcfce7;
+      --danger: #dc2626;
+      --danger-soft: #fee2e2;
+      --warning: #b45309;
+      --warning-soft: #fef3c7;
+      --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.05);
+      --radius-lg: 18px;
+      --radius-md: 14px;
+      --radius-sm: 10px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      margin: 0;
+      padding: 10px;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-size: 12px;
+      line-height: 1.45;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(37, 99, 235, 0.08), transparent 26%),
+        var(--bg);
+    }
+
+    h1, h2, h3, p {
+      margin: 0;
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    button {
+      border: 0;
+      cursor: pointer;
+      transition: background 0.2s ease, border-color 0.2s ease, transform 0.04s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+    }
+
+    button:active {
+      transform: translateY(1px);
+    }
+
+    input,
+    select {
+      width: 100%;
+      min-width: 0;
+      padding: 9px 10px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #fff;
+      color: var(--text);
+      outline: none;
+    }
+
+    input::placeholder {
+      color: #94a3b8;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+    }
+	
+	.info-row.apply-disabled {
+	  opacity: 0.5;
+	}
+
+	.info-value-wrap {
+		display: flex;
+		flex-direction: row;
+		gap: 4px;
+		min-width: 0;
+		align-items: center;
+	}
+
+	.apply-note {
+	  display: inline-flex;
+	  align-items: center;
+	  width: fit-content;
+	  padding: 2px 7px;
+	  border-radius: 999px;
+	  font-size: 10px;
+	  font-weight: 800;
+	  letter-spacing: 0.04em;
+	  text-transform: uppercase;
+	}
+
+	.machine-option-inline {
+	  margin-top: 6px;
+	}
+
+	.machine-checkbox-label {
+	  display: inline-flex;
+	  align-items: center;
+	  gap: 8px;
+	  font-size: 11px;
+	  font-weight: 600;
+	  color: var(--text-soft);
+	  cursor: pointer;
+	}
+
+	.machine-checkbox-label input {
+	  width: 15px;
+	  height: 15px;
+	  min-width: 15px;
+	  margin: 0;
+	  padding: 0;
+	}
+    .app-shell {
+      display: grid;
+      gap: 12px;
+    }
+
+    .hero-card {
+      position: relative;
+      overflow: hidden;
+      padding: 14px;
+      border: 1px solid rgba(37, 99, 235, 0.14);
+      border-radius: 22px;
+      background: linear-gradient(145deg, #ffffff 0%, #f8fbff 55%, #eef5ff 100%);
+    }
+
+    .hero-card::after {
+      content: "";
+      position: absolute;
+      right: -40px;
+      top: -40px;
+      width: 140px;
+      height: 140px;
+      background: radial-gradient(circle, rgba(37, 99, 235, 0.12), transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: var(--primary-soft);
+      color: var(--primary);
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .hero-title {
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+    }
+
+    .hero-subtitle {
+      margin-top: 4px;
+      color: var(--text-muted);
+      font-size: 12px;
+    }
+
+    .status-banner {
+      display: none;
+      margin-top: 10px;
+      padding: 9px 11px;
+      border-radius: 12px;
+      border: 1px solid transparent;
+      font-weight: 600;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .status-banner.is-visible {
+      display: block;
+    }
+
+    .status-banner.is-info {
+      background: #eff6ff;
+      border-color: #bfdbfe;
+      color: #1d4ed8;
+    }
+
+    .status-banner.is-success {
+      background: var(--success-soft);
+      border-color: #bbf7d0;
+      color: var(--success);
+    }
+
+    .status-banner.is-error {
+      background: var(--danger-soft);
+      border-color: #fecaca;
+      color: var(--danger);
+    }
+
+    .card {
+      background: linear-gradient(145deg, #ffffff 0%, #f8fbff 55%, #eef5ff 100%);
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      border-radius: var(--radius-lg);
+      padding: 12px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .card-title-wrap {
+      display: grid;
+      gap: 3px;
+	  grid-template-columns: 1fr 1fr;
+    }
+
+    .card-title {
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--text);
+    }
+
+    .card-description {
+      color: var(--text-muted);
+      font-size: 11.5px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      min-height: 34px;
+      padding: 0 11px;
+      border-radius: 11px;
+      border: 1px solid transparent;
+      font-weight: 700;
+      white-space: nowrap;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-hover);
+    }
+
+    .btn-secondary {
+      background: var(--surface-muted);
+      border-color: var(--line);
+      color: var(--text);
+    }
+
+    .btn-secondary:hover {
+      background: #e2e8f0;
+    }
+
+    .btn-ghost {
+      background: #fff;
+      border-color: var(--line);
+      color: var(--text-soft);
+    }
+
+    .btn-ghost:hover {
+      background: #f8fafc;
+    }
+
+    .btn-danger {
+      background: #fff;
+      border-color: #fecaca;
+      color: var(--danger);
+    }
+
+    .btn-danger:hover {
+      background: #fef2f2;
+    }
+
+    .btn-icon {
+      width: 34px;
+      min-width: 34px;
+      height: 34px;
+      padding: 0;
+      font-size: 14px;
+    }
+
+    .overview-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      align-items: start;
+    }
+
+    .info-panel {
+      display: grid;
+      gap: 8px;
+    }
+
+    .info-row {
+      display: grid;
+      grid-template-columns: 98px 1fr;
+      gap: 8px;
+      align-items: start;
+      padding: 2px 0;
+      border-bottom: 1px dashed var(--line);
+    }
+
+    .info-row:last-child {
+      border-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .info-label {
+      color: var(--text-muted);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .info-value {
+      color: var(--text);
+      font-size: 12.5px;
+      font-weight: 700;
+      line-height: 1.35;
+      word-break: break-word;
+    }
+
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      gap: 8px;
+    }
+
+    .metric {
+      position: relative;
+      overflow: hidden;
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: linear-gradient(180deg, #fff 0%, #f8fafc 100%);
+      min-height: 40px;
+    }
+
+    .metric::before {
+      content: "";
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 4px;
+      background: #cbd5e1;
+    }
+
+    .metric-label {
+      display: block;
+      color: var(--text-muted);
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .metric-value {
+      display: block;
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      color: var(--text);
+    }
+
+    .metric-sub {
+      margin-top: 5px;
+      color: var(--text-muted);
+      font-size: 11px;
+    }
+
+    .metric.is-primary::before {
+      background: var(--primary);
+    }
+
+    .metric.is-good {
+      background: linear-gradient(180deg, #f7fff9 0%, var(--success-soft) 100%);
+      border-color: rgba(22, 163, 74, 0.18);
+    }
+
+    .metric.is-good::before {
+      background: var(--success);
+    }
+
+    .metric.is-good .metric-value,
+    .metric.is-good .metric-sub {
+      color: var(--success);
+    }
+
+    .metric.is-bad {
+      background: linear-gradient(180deg, #fff7f7 0%, var(--danger-soft) 100%);
+      border-color: rgba(220, 38, 38, 0.18);
+    }
+
+    .metric.is-bad::before {
+      background: var(--danger);
+    }
+
+    .metric.is-bad .metric-value,
+    .metric.is-bad .metric-sub {
+      color: var(--danger);
+    }
+
+    .person-list {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .person-row {
+      display: grid;
+      grid-template-columns: minmax(112px, 1.2fr) minmax(82px, 92px) minmax(120px, 1.6fr) 36px;
+      gap: 8px;
+      align-items: center;
+      padding: 8px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: linear-gradient(180deg, #fff 0%, #f8fafc 100%);
+    }
+
+    .toolbar {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .toolbar .btn {
+      width: 100%;
+    }
+
+    .table-shell {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .table-scroll {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      min-width: 520px;
+      border-collapse: collapse;
+    }
+
+    thead th {
+      padding: 11px 12px;
+      text-align: left;
+      background: #f8fafc;
+      color: var(--text-muted);
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      border-bottom: 1px solid var(--line);
+    }
+
+    tbody td {
+      padding: 12px;
+      border-bottom: 1px solid #eef2f7;
+      vertical-align: top;
+    }
+
+    tbody tr:last-child td {
+      border-bottom: 0;
+    }
+
+    tbody tr:hover {
+      background: #fbfdff;
+    }
+
+    .person-name-cell {
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .hours-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 52px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: var(--surface-muted);
+      border: 1px solid var(--line);
+      font-weight: 800;
+    }
+
+    .comment-cell {
+      color: var(--text-soft);
+      max-width: 220px;
+      word-break: break-word;
+    }
+
+    .row-actions {
+      display: flex;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .inline-edit-input,
+    .inline-edit-select {
+      width: 100%;
+    }
+
+    .empty-state {
+      padding: 24px 14px !important;
+      text-align: center;
+      color: var(--text-muted);
+      background: linear-gradient(180deg, #fff 0%, #fafcff 100%);
+    }
+
+    .empty-title {
+      display: block;
+      color: var(--text);
+      font-size: 13px;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+
+    .no-contract-card {
+      display: none;
+      border-style: dashed;
+      background: linear-gradient(180deg, #fff 0%, #fafafa 100%);
+    }
+
+    .no-contract-box {
+      padding: 10px;
+      border: 1px dashed var(--line-strong);
+      border-radius: 14px;
+      background: #fcfcfd;
+      color: var(--text-soft);
+    }
+
+    .muted {
+      color: var(--text-muted);
+    }
+
+    .hidden {
+      display: none !important;
+    }
+	
+	.contract-selection-list {
+	  display: grid;
+	  gap: 8px;
+	}
+
+	.contract-option {
+	  display: grid;
+	  gap: 8px;
+	  padding: 10px;
+	  border: 1px solid var(--line);
+	  border-radius: 14px;
+	  background: linear-gradient(180deg, #fff 0%, #f8fafc 100%);
+	}
+
+	.contract-option-top {
+	  display: flex;
+	  justify-content: space-between;
+	  align-items: flex-start;
+	  gap: 10px;
+	}
+
+	.contract-option-title {
+	  font-size: 13px;
+	  font-weight: 800;
+	  color: var(--text);
+	}
+
+	.contract-option-subtitle {
+	  font-size: 11px;
+	  color: var(--text-muted);
+	  margin-top: 2px;
+	}
+
+	.contract-option-grid {
+	  display: grid;
+	  grid-template-columns: 1fr 1fr;
+	  gap: 6px 12px;
+	}
+
+	.contract-option-item {
+	  min-width: 0;
+	}
+
+	.contract-option-label {
+	  display: block;
+	  font-size: 10px;
+	  font-weight: 800;
+	  text-transform: uppercase;
+	  letter-spacing: 0.05em;
+	  color: var(--text-muted);
+	  margin-bottom: 2px;
+	}
+
+	.contract-option-value {
+	  display: block;
+	  font-size: 12px;
+	  font-weight: 700;
+	  color: var(--text);
+	  word-break: break-word;
+	}
+
+	.contract-option .btn {
+	  justify-self: start;
+	}
+
+	@media (max-width: 700px) {
+	  .contract-option-grid {
+		grid-template-columns: 1fr;
+	  }
+	}
+	
+  </style>
+</head>
+<body>
+  <div class="app-shell" id="appRoot">
+    <section class="hero-card contract-card">
+      <div class="hero-top">
+        <div>
+          <div class="eyebrow">Service Contract</div>
+          <h1 class="hero-title">Contract Overview</h1>
+        </div>
+		<button type="button" class="btn btn-ghost exportWorklogsBtn">Export worklogs</button>
+        <button id="applyContractBtn" type="button" class="btn btn-primary hidden">Apply to ticket</button>
+      </div>
+
+      <div id="message" class="status-banner"></div>
+
+      <div class="overview-grid">
+        <div class="info-panel">
+          <div class="info-row">
+		  <span class="info-label">Ticket</span>
+		  <span class="info-value" id="ticketNumber">-</span>
+		</div>
+		<div class="info-row">
+		  <span class="info-label">Customer</span>
+		  <span class="info-value" id="customer">-</span>
+		</div>
+		<div class="info-row">
+		  <span class="info-label">Contract Type</span>
+		  <span class="info-value" id="contractType">-</span>
+		</div>
+		<div class="info-row">
+		  <span class="info-label">External ID</span>
+		  <span class="info-value" id="externalId">-</span>
+		</div>
+		<div class="info-row" id="orderNumberRow">
+		  <span class="info-label">Order Number</span>
+		  <span class="info-value-wrap">
+			<span class="info-value" id="orderNumber">-</span>
+			<span class="apply-note" id="orderNumberApplyNote">✔️</span>
+		  </span>
+		</div>
+
+		<div class="info-row" id="validUntilRow">
+		  <span class="info-label">Valid Until</span>
+		  <span class="info-value-wrap">
+			<span class="info-value" id="validUntil">-</span>
+			<span class="apply-note enabled">✔️</span>
+		  </span>
+		</div>
+
+		<div class="info-row" id="machineNoRow">
+		  <span class="info-label">Machine No.</span>
+		  <span class="info-value-wrap">
+			<span class="info-value" id="machineNo">-</span>
+			<span class="apply-note" id="machineNoApplyNote">✔️</span>
+			<span class="machine-option-inline hidden" id="machineApplyOptionWrap">
+			  <label class="machine-checkbox-label">
+				<input type="checkbox" id="forceMachineApply">
+				<span>Also add machine data</span>
+			  </label>
+			</span>
+		  </span>
+		</div>
+
+		<div class="info-row" id="machineTypeRow">
+		  <span class="info-label">Machine Type</span>
+		  <span class="info-value-wrap">
+			<span class="info-value" id="machineType">-</span>
+			<span class="apply-note" id="machineTypeApplyNote">✔️</span>
+		  </span>
+		</div>
+	</div>
+
+        <div class="metrics-grid">
+          <div class="metric is-primary">
+            <span class="metric-label">Sold Hours</span>
+            <span class="metric-value" id="soldHours">-</span>
+          </div>
+          <div class="metric">
+            <span class="metric-label">In Ticket</span>
+            <span class="metric-value" id="bookedHoursInTicket">-</span>
+          </div>
+          <div class="metric">
+            <span class="metric-label">Used Total</span>
+            <span class="metric-value" id="usedHoursTotal">-</span>
+          </div>
+          <div class="metric" id="remainingHoursChip">
+            <span class="metric-label">Remaining</span>
+            <span class="metric-value" id="remainingHours">-</span>
+          </div>
+        </div>
+      </div>
+    </section>
+	<section class="card hidden" id="contractSelectionCard">
+	  <div class="card-header">
+		<div class="card-title-wrap">
+		  <h2 class="card-title">Multiple Contracts Found</h2>
+		  <p class="card-description">
+			More than one service contract matches this external ID. Please choose the correct one for this ticket.
+		  </p>
+		</div>
+	  </div>
+
+	  <div id="contractSelectionList" class="contract-selection-list"></div>
+	</section>
+    <section class="card" id="entryCard">
+      <div class="card-header">
+        <div class="card-title-wrap">
+          <h2 class="card-title">Add Used Hours</h2>
+          <p class="card-description">Capture one or more time entries before saving them to the contract.</p>
+        </div>
+      </div>
+
+      <div id="peopleContainer" class="person-list"></div>
+
+      <div class="toolbar">
+        <button id="addPersonBtn" type="button" class="btn btn-secondary">+ Add person</button>
+        <button id="saveBtn" type="button" class="btn btn-primary">Save hours</button>
+      </div>
+    </section>
+
+    <section class="card" id="tableCard">
+      <div class="card-header">
+        <div class="card-title-wrap">
+          <h2 class="card-title">Booked Hours in This Ticket</h2>
+          <p class="card-description">Review and edit the worklogs that have already been assigned to this ticket.</p>
+        </div>
+      </div>
+
+      <div class="table-shell">
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>Person</th>
+                <th>Hours</th>
+                <th>Date / Time</th>
+                <th>Comment</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="hoursTableBody">
+              <tr>
+                <td colspan="5" class="empty-state">
+                  <span class="empty-title">No worklogs yet</span>
+                  Time entries saved for this ticket will appear here.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="card no-contract-card">
+      <div class="card-header">
+        <div class="card-title-wrap">
+          <h2 class="card-title">No Contract Found</h2> <button type="button" class="btn btn-ghost exportWorklogsBtn">Export worklogs</button>
+          <p class="card-description">We could not match this ticket to a service contract.</p>
+        </div>
+      </div>
+      <div class="no-contract-box">
+        Please verify the order number or organization external ID and try again.
+      </div>
+    </section>
+  </div>
+
+  <script>
+	/**
+	 * IMPORTANT CONCEPT:
+	 *
+	 * Contract hours come from TWO sources:
+	 *
+	 * 1. Excel 	   → contract.used_hours
+	 * 2. App logs     → worklogs
+	 *
+	 * To avoid double counting:
+	 *
+	 * - Backend stores `import_synced_until`
+	 * - Only worklogs AFTER this timestamp are added on top
+	 *
+	 * So:
+	 * used_total = used_hours_from_excel + new_app_logs
+	 *
+	 * This allows:
+	 * - Excel updates without losing app logs
+	 * - Accurate remaining hours
+	 */
+  
+  
+    const client = ZAFClient.init();
+    window.addEventListener('load', resizeApp);
+    window.addEventListener('resize', resizeApp);
+    document.addEventListener('DOMContentLoaded', resizeApp);
+
+    const configuredApiBase = '{{setting.api_base}}'.trim();
+    const API_BASE = configuredApiBase && !configuredApiBase.startsWith('{{')
+      ? configuredApiBase.replace(/\/$/, '')
+      : 'http://localhost:3000';
+
+    let lastAppHeight = 0;
+    let resizeTimer = null;
+    let currentTicketId = null;
+    let currentOrderNumber = null;
+    let currentCustomer = null;
+    let currentAgentName = '';
+    let agentOptions = [];
+    let currentExternalId = null;
+    let currentMachineType = null;
+    let currentMachineNo = null;
+    let currentValidUntil = null;
+    let editingWorklogId = null;
+
+    function resizeApp() {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        const appRoot = document.getElementById('appRoot');
+        if (!appRoot) return;
+
+        const rect = appRoot.getBoundingClientRect();
+        const styles = window.getComputedStyle(appRoot);
+        const marginBottom = parseFloat(styles.marginBottom || '0');
+        const nextHeight = Math.max(Math.ceil(rect.height + marginBottom + 28), 220);
+
+        if (nextHeight === lastAppHeight) return;
+        lastAppHeight = nextHeight;
+
+        client.invoke('resize', {
+          width: '100%',
+          height: `${nextHeight}px`
+        });
+      }, 50);
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    function setMessage(text = '', type = 'info') {
+      const el = document.getElementById('message');
+      if (!el) return;
+
+      el.textContent = text || '';
+      el.className = 'status-banner';
+
+      if (!text) return;
+
+      el.classList.add('is-visible');
+      if (type === 'success') el.classList.add('is-success');
+      else if (type === 'error') el.classList.add('is-error');
+      else el.classList.add('is-info');
+
+      resizeApp();
+    }
+
+    async function loadTicketOrganizationExternalId() {
+      try {
+        const data = await client.get('ticket.organization');
+        const organization = data['ticket.organization'];
+
+        if (!organization || !organization.id) return '';
+
+        const response = await client.request({
+          url: `/api/v2/organizations/${organization.id}.json`,
+          type: 'GET',
+          contentType: 'application/json'
+        });
+
+        return response?.organization?.external_id || '';
+      } catch (error) {
+        console.error('Failed to load organization external ID', error);
+        return '';
+      }
+    }
+	
+	
+	/**
+	 * Loads contract(s) using the organization external ID.
+	 *
+	 * Handles 3 cases:
+	 * 1. Single contract → render directly
+	 * 2. Multiple contracts → show selection UI
+	 * 3. No contract → show fallback UI
+	 *
+	 * Also passes ticket_number so backend can calculate:
+	 * - booked_hours_in_ticket
+	 * - remaining hours correctly
+	 */
+    async function loadContractDataByExternalId(externalId) {
+	  try {
+		const response = await client.request({
+		  url: `${API_BASE}/contract-by-external-id/${encodeURIComponent(externalId)}?ticket_number=${encodeURIComponent(currentTicketId || '')}`,
+		  type: 'GET',
+		  contentType: 'application/json',
+		  headers: { 'ngrok-skip-browser-warning': 'true' }
+		});
+
+		setMessage('');
+
+		if (response?.multiple && Array.isArray(response.contracts)) {
+		  if (response.contracts.length === 1) {
+			hideContractSelection();
+			renderContract(response.contracts[0]);
+		  } else if (response.contracts.length > 1) {
+			renderNoContract(false);
+			showContractSelection(response.contracts);
+			setMessage('Multiple contracts found. Please choose one.', 'info');
+		  } else {
+			renderNoContract();
+		  }
+
+		  return true;
+		}
+
+		hideContractSelection();
+		renderContract(response);
+		return true;
+	  } catch (error) {
+		console.error(error);
+		const errorMessage = error?.responseJSON?.error || 'Failed to load contract data by external ID.';
+		setMessage(errorMessage, 'error');
+		hideContractSelection();
+		renderNoContract();
+		return false;
+	  }
+	}
+	function hideContractSelection() {
+	  const card = document.getElementById('contractSelectionCard');
+	  const list = document.getElementById('contractSelectionList');
+
+	  if (card) card.classList.add('hidden');
+	  if (list) list.innerHTML = '';
+	}
+
+	function showContractSelection(contracts) {
+	  const card = document.getElementById('contractSelectionCard');
+	  const list = document.getElementById('contractSelectionList');
+
+	  if (!card || !list) return;
+
+	  list.innerHTML = '';
+
+	  contracts.forEach(contract => {
+		const option = document.createElement('div');
+		option.className = 'contract-option';
+
+		option.innerHTML = `
+		  <div class="contract-option-top">
+			<div>
+			  <div class="contract-option-title">${escapeHtml(contract.customer || '-')}</div>
+			  <div class="contract-option-subtitle">${escapeHtml(contract.contract_type || '-')}</div>
+			</div>
+			<button type="button" class="btn btn-primary select-contract-btn">
+			  Use this contract
+			</button>
+		  </div>
+
+		  <div class="contract-option-grid">
+			<div class="contract-option-item">
+			  <span class="contract-option-label">Order Number</span>
+			  <span class="contract-option-value">${escapeHtml(contract.order_number || '-')}</span>
+			</div>
+
+			<div class="contract-option-item">
+			  <span class="contract-option-label">Valid Until</span>
+			  <span class="contract-option-value">${escapeHtml(contract.valid_until || '-')}</span>
+			</div>
+
+			<div class="contract-option-item">
+			  <span class="contract-option-label">Machine No.</span>
+			  <span class="contract-option-value">${escapeHtml(contract.machine_no || '-')}</span>
+			</div>
+
+			<div class="contract-option-item">
+			  <span class="contract-option-label">Machine Type</span>
+			  <span class="contract-option-value">${escapeHtml(contract.machine_type || '-')}</span>
+			</div>
+
+			<div class="contract-option-item">
+			  <span class="contract-option-label">External ID</span>
+			  <!-- For showing all external IDs use this <span class="contract-option-value">${escapeHtml(contract.external_id || '-')}</span> --> 
+			  <span class="contract-option-value">${escapeHtml(currentExternalId || '-')}</span>
+			</div>
+
+			<div class="contract-option-item">
+			  <span class="contract-option-label">Sold Hours</span>
+			  <span class="contract-option-value">${escapeHtml(contract.sold_hours ?? '-')}</span>
+			</div>
+		  </div>
+		`;
+
+		option.querySelector('.select-contract-btn').addEventListener('click', async () => {
+		  currentOrderNumber = contract.order_number || null;
+		  hideContractSelection();
+		  renderContract(contract);
+
+		  if (currentOrderNumber) {
+			setMessage(`Selected contract ${currentOrderNumber}.`, 'success');
+		  } else {
+			setMessage('Contract selected.', 'success');
+		  }
+
+		  resizeApp();
+		});
+
+		list.appendChild(option);
+	  });
+
+	  card.classList.remove('hidden');
+	  resizeApp();
+	}
+	
+	/**
+	 * Applies selected contract data to the Zendesk ticket.
+	 *
+	 * Important logic:
+	 * - Only sets order number if it looks valid (prevents garbage data)
+	 * - Machine fields are only applied if:
+	 *   - Machine number is "safe" OR
+	 *   - User explicitly forces it via checkbox
+	 *
+	 * This prevents overwriting ticket data with unreliable contract data.
+	 *
+	 * After applying:
+	 * - Reloads contract (if order number was set)
+	 * - Updates UI indicators
+	 */
+    async function applyContractToTicket() {
+	  setMessage('');
+
+	  const orderNumberToSet = currentOrderNumber || document.getElementById('orderNumber').textContent || '';
+	  const validUntilDateToSet = getLastDayOfMonthIso(currentValidUntil);
+	  const applyMachineFields = shouldApplyMachineFields();
+	  const applyOrderNumber = isNumericOrderNumber(orderNumberToSet);
+
+	  const fieldsToSet = {
+		'ticket.customField:custom_field_360008927658': getPaymentInformationTag(),
+		'ticket.customField:custom_field_360009048957': validUntilDateToSet
+	  };
+
+	  if (applyOrderNumber) {
+		fieldsToSet['ticket.customField:custom_field_360008401018'] = orderNumberToSet;
+	  }
+
+	  if (applyMachineFields) {
+		fieldsToSet['ticket.customField:custom_field_360010678317'] = currentMachineNo || '';
+		fieldsToSet['ticket.customField:custom_field_360010599377'] = currentMachineType || '';
+	  }
+
+	  try {
+		await client.set(fieldsToSet);
+
+		if (applyOrderNumber) {
+		  currentOrderNumber = orderNumberToSet;
+		}
+
+		let successMessage = 'Contract data was applied to the ticket.';
+		if (!applyOrderNumber && !applyMachineFields) {
+		  successMessage = 'Contract data was applied to the ticket. Order number and machine fields were skipped.';
+		} else if (!applyOrderNumber) {
+		  successMessage = 'Contract data and machine fields were applied to the ticket. Order number was skipped.';
+		} else if (!applyMachineFields) {
+		  successMessage = 'Contract data was applied to the ticket. Machine fields were skipped.';
+		} else {
+		  successMessage = 'Contract data, order number, machine number and machine type were applied to the ticket.';
+		}
+
+		setMessage(successMessage, 'success');
+
+		if (applyOrderNumber) {
+		  await loadContractData(orderNumberToSet);
+		} else {
+		  updateApplyIndicators();
+		  resizeApp();
+		}
+	  } catch (error) {
+		console.error(error);
+		setMessage('Failed to apply contract fields to ticket.', 'error');
+	  }
+	}
+	
+	/**
+	 * Converts contract "valid until" (e.g. "Apr 2026" or Excel date)
+	 * into an ISO date string representing the LAST day of that month.
+	 *
+	 * Example:
+	 * "Apr 2026" → "2026-04-30"
+	 *
+	 * This ensures Zendesk date fields are set correctly.
+	 */
+    function getLastDayOfMonthIso(monthYearValue) {
+      if (!monthYearValue) return '';
+      const value = String(monthYearValue).trim();
+      if (!value) return '';
+
+      if (/^\d+(\.\d+)?$/.test(value)) {
+        const serial = Number(value);
+        const excelEpoch = new Date(Date.UTC(1899, 11, 30));
+        const jsDate = new Date(excelEpoch.getTime() + serial * 86400000);
+
+        if (!Number.isNaN(jsDate.getTime())) {
+          const lastDay = new Date(jsDate.getFullYear(), jsDate.getMonth() + 1, 0);
+          const yyyy = lastDay.getFullYear();
+          const mm = String(lastDay.getMonth() + 1).padStart(2, '0');
+          const dd = String(lastDay.getDate()).padStart(2, '0');
+          return `${yyyy}-${mm}-${dd}`;
+        }
+      }
+
+      const match = value.match(/^([A-Za-z]{3,9})\s+(\d{4})$/);
+      if (!match) return '';
+
+      const monthName = match[1].toLowerCase();
+      const year = parseInt(match[2], 10);
+      const monthMap = {
+        jan: 0, january: 0,
+        feb: 1, february: 1,
+        mar: 2, march: 2,
+        apr: 3, april: 3,
+        may: 4,
+        jun: 5, june: 5,
+        jul: 6, july: 6,
+        aug: 7, august: 7,
+        sep: 8, sept: 8, september: 8,
+        oct: 9, october: 9,
+        nov: 10, november: 10,
+        dec: 11, december: 11
+      };
+
+      const monthIndex = monthMap[monthName];
+      if (monthIndex === undefined || Number.isNaN(year)) return '';
+
+      const lastDay = new Date(year, monthIndex + 1, 0);
+      const yyyy = lastDay.getFullYear();
+      const mm = String(lastDay.getMonth() + 1).padStart(2, '0');
+      const dd = String(lastDay.getDate()).padStart(2, '0');
+      return `${yyyy}-${mm}-${dd}`;
+    }
+
+    function formatLocalDateTime(isoString) {
+      if (!isoString) return '-';
+      const date = new Date(isoString);
+      if (Number.isNaN(date.getTime())) return isoString;
+
+      return date.toLocaleString('de-DE', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    }
+	
+	/**
+	 * Loads all agents from Zendesk to populate the "person" dropdown.
+	 *
+	 * - Includes current user even if not in API result
+	 * - Removes duplicates
+	 * - Sorts alphabetically
+	 *
+	 * Falls back gracefully if API fails.
+	 */
+    async function loadAgents() {
+      try {
+        const currentUserData = await client.get('currentUser');
+        currentAgentName = currentUserData?.currentUser?.name || '';
+
+        const response = await client.request({
+          url: '/api/v2/users.json?role[]=agent&role[]=admin&per_page=100',
+          type: 'GET',
+          contentType: 'application/json'
+        });
+
+        const users = Array.isArray(response?.users) ? response.users : [];
+        const names = users.map(user => (user?.name || '').trim()).filter(Boolean);
+        const uniqueNames = Array.from(new Set(names)).sort((a, b) => a.localeCompare(b));
+
+        if (currentAgentName && !uniqueNames.includes(currentAgentName)) {
+          uniqueNames.unshift(currentAgentName);
+        }
+
+        agentOptions = uniqueNames;
+      } catch (error) {
+        console.error('Failed to load agents', error);
+        agentOptions = currentAgentName ? [currentAgentName] : [];
+      }
+    }
+
+    function buildAgentOptions(selectedName = '') {
+      const options = agentOptions.length > 0 ? agentOptions : [selectedName || currentAgentName].filter(Boolean);
+      return options.map(name => {
+        const selected = name === selectedName ? 'selected' : '';
+        return `<option value="${escapeHtml(name)}" ${selected}>${escapeHtml(name)}</option>`;
+      }).join('');
+    }
+
+    function addPersonRow(name = '', hours = '', comment = '') {
+      const selectedName = name || currentAgentName || (agentOptions[0] || '');
+      const container = document.getElementById('peopleContainer');
+      const row = document.createElement('div');
+      row.className = 'person-row';
+      row.innerHTML = `
+        <select class="person-name" aria-label="Person">
+          ${buildAgentOptions(selectedName)}
+        </select>
+        <input type="number" class="person-hours" placeholder="Hours" min="0.25" step="0.25" value="${escapeHtml(hours)}" aria-label="Hours">
+        <input type="text" class="person-comment" placeholder="Comment" value="${escapeHtml(comment)}" aria-label="Comment">
+        <button type="button" class="btn btn-danger btn-icon remove-btn" title="Remove row">×</button>
+      `;
+      row.querySelector('.remove-btn').addEventListener('click', () => {
+        row.remove();
+        resizeApp();
+      });
+      container.appendChild(row);
+      resizeApp();
+    }
+	
+	/**
+	 * Renders all worklogs for the current ticket.
+	 *
+	 * Supports:
+	 * - Display mode
+	 * - Inline edit mode (per row)
+	 *
+	 * Uses `editingWorklogId` to switch between modes.
+	 */
+    function renderTicketWorklogs(entries) {
+      const tbody = document.getElementById('hoursTableBody');
+      tbody.innerHTML = '';
+
+      if (!entries || entries.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="5" class="empty-state">
+              <span class="empty-title">No worklogs yet</span>
+              Time entries saved for this ticket will appear here.
+            </td>
+          </tr>
+        `;
+        resizeApp();
+        return;
+      }
+
+      entries.forEach(entry => {
+        const tr = document.createElement('tr');
+        tr.dataset.worklogId = entry.id;
+        const isEditing = String(editingWorklogId) === String(entry.id);
+
+        if (isEditing) {
+          tr.innerHTML = `
+            <td>
+              <select class="inline-edit-select edit-person">${buildAgentOptions(entry.person)}</select>
+            </td>
+            <td>
+              <input type="number" class="inline-edit-input edit-hours" min="0.25" step="0.25" value="${escapeHtml(entry.hours)}">
+            </td>
+            <td>${escapeHtml(formatLocalDateTime(entry.booked_at))}</td>
+            <td>
+              <input type="text" class="inline-edit-input edit-comment" value="${escapeHtml(entry.comment || '')}">
+            </td>
+            <td>
+              <div class="row-actions">
+                <button type="button" class="btn btn-primary btn-icon save-edit-btn" title="Save">✓</button>
+                <button type="button" class="btn btn-ghost btn-icon cancel-edit-btn" title="Cancel">✕</button>
+              </div>
+            </td>
+          `;
+        } else {
+          tr.innerHTML = `
+            <td class="person-name-cell">${escapeHtml(entry.person)}</td>
+            <td><span class="hours-badge">${escapeHtml(entry.hours)}</span></td>
+            <td>${escapeHtml(formatLocalDateTime(entry.booked_at))}</td>
+            <td class="comment-cell">${entry.comment ? escapeHtml(entry.comment) : '<span class="muted">-</span>'}</td>
+            <td>
+              <div class="row-actions">
+                <button type="button" class="btn btn-ghost btn-icon edit-worklog-btn" title="Edit">✎</button>
+              </div>
+            </td>
+          `;
+        }
+
+        tbody.appendChild(tr);
+      });
+
+      bindWorklogRowActions(entries);
+      resizeApp();
+    }
+	
+	/**
+	 * Attaches event handlers to worklog rows:
+	 *
+	 * - Edit → switches row into edit mode
+	 * - Cancel → restores view mode
+	 * - Save → updates backend and reloads contract
+	 *
+	 * Includes validation:
+	 * - person required
+	 * - hours > 0
+	 * - hours in 0.25 steps
+	 */
+    function bindWorklogRowActions(entries) {
+      const tbody = document.getElementById('hoursTableBody');
+
+      tbody.querySelectorAll('.edit-worklog-btn').forEach(btn => {
+        btn.addEventListener('click', (event) => {
+          const tr = event.target.closest('tr');
+          editingWorklogId = tr.dataset.worklogId;
+          renderTicketWorklogs(entries);
+        });
+      });
+
+      tbody.querySelectorAll('.cancel-edit-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          editingWorklogId = null;
+          renderTicketWorklogs(entries);
+        });
+      });
+
+      tbody.querySelectorAll('.save-edit-btn').forEach(btn => {
+        btn.addEventListener('click', async (event) => {
+          const tr = event.target.closest('tr');
+          const worklogId = tr.dataset.worklogId;
+          const person = tr.querySelector('.edit-person').value.trim();
+          const hours = parseFloat(tr.querySelector('.edit-hours').value || '0');
+          const comment = tr.querySelector('.edit-comment').value.trim();
+
+          setMessage('');
+
+          if (!person) {
+            setMessage('Person is required.', 'error');
+            return;
+          }
+          if (!hours || hours <= 0) {
+            setMessage('Hours must be greater than 0.', 'error');
+            return;
+          }
+          if (Math.round(hours * 4) !== hours * 4) {
+            setMessage('Hours must be entered in 0.25 steps.', 'error');
+            return;
+          }
+
+          try {
+            await client.request({
+              url: `${API_BASE}/worklog/${encodeURIComponent(worklogId)}`,
+              type: 'PUT',
+              contentType: 'application/json',
+              headers: { 'ngrok-skip-browser-warning': 'true' },
+              data: JSON.stringify({
+                ticket_number: currentTicketId,
+                order_number: currentOrderNumber,
+                customer: currentCustomer,
+                person,
+                hours,
+                comment
+              })
+            });
+
+            editingWorklogId = null;
+            setMessage('Worklog updated successfully.', 'success');
+            await loadContractData(currentOrderNumber);
+          } catch (error) {
+            console.error(error);
+            setMessage(error?.responseJSON?.error || 'Failed to update worklog.', 'error');
+          }
+        });
+      });
+    }
+	
+	/**
+	 * Checks if machine number is in a "safe" format.
+	 *
+	 * Example accepted:
+	 * 12.3456
+	 *
+	 * Used to prevent applying unclear/invalid machine data to tickets.
+	 */
+	function isUnambiguousMachineNumber(value) {
+	  const machineNo = String(value ?? '').trim();
+	  return /^\d{2}\.\d{3,4}$/.test(machineNo);
+	}
+	
+	/**
+	 * Validates order number format.
+	 *
+	 * Accepts:
+	 * - 7000012345
+	 * - 7000012345-1000
+	 *
+	 * Prevents setting invalid order numbers in Zendesk.
+	 */
+	function isNumericOrderNumber(value) {
+	  const orderNumber = String(value ?? '').trim();
+
+	  if (!orderNumber) return false;
+
+	  return /^\d+(?:\s*-\s*\d+)?$/.test(orderNumber);
+	}
+	
+	function getPaymentInformationTag() {
+	  const customer = String(currentCustomer ?? '').toLowerCase();
+
+	  if (customer.includes('mesabi')) {
+		return 'service_contract_mesabi';
+	  }
+
+	  return 'tfld_payment_information_service_contract';
+	}
+	
+	/**
+	 * Determines whether machine fields should be applied.
+	 *
+	 * Logic:
+	 * - If machine number is clearly valid → apply automatically
+	 * - Otherwise → only apply if user explicitly checked checkbox
+	 *
+	 * Prevents accidental overwrites.
+	 */
+	function shouldApplyMachineFields() {
+	  const safe = isUnambiguousMachineNumber(currentMachineNo);
+	  if (safe) return true;
+
+	  const checkbox = document.getElementById('forceMachineApply');
+	  return !!checkbox?.checked;
+	}
+	
+	/**
+	 * Updates UI indicators (✔️ / ❌) showing what will be applied.
+	 *
+	 * Reflects:
+	 * - Order number validity
+	 * - Machine field safety
+	 * - User override (checkbox)
+	 *
+	 * Helps user understand what will happen BEFORE clicking "Apply".
+	 */
+	function updateApplyIndicators() {
+	  const orderAllowed = isNumericOrderNumber(currentOrderNumber);
+	  const machineSafe = isUnambiguousMachineNumber(currentMachineNo);
+	  const machineAllowed = shouldApplyMachineFields();
+
+	  const orderRow = document.getElementById('orderNumberRow');
+	  const validUntilRow = document.getElementById('validUntilRow');
+	  const machineNoRow = document.getElementById('machineNoRow');
+	  const machineTypeRow = document.getElementById('machineTypeRow');
+
+	  const orderNumberApplyNote = document.getElementById('orderNumberApplyNote');
+	  const machineNoApplyNote = document.getElementById('machineNoApplyNote');
+	  const machineTypeApplyNote = document.getElementById('machineTypeApplyNote');
+	  const machineApplyOptionWrap = document.getElementById('machineApplyOptionWrap');
+
+	  if (orderRow) {
+		orderRow.classList.toggle('apply-target', orderAllowed);
+		orderRow.classList.toggle('apply-disabled', !orderAllowed);
+	  }
+
+	  if (validUntilRow) {
+		validUntilRow.classList.add('apply-target');
+		validUntilRow.classList.remove('apply-disabled');
+	  }
+
+	  if (machineNoRow) {
+		machineNoRow.classList.toggle('apply-target', machineAllowed);
+		machineNoRow.classList.toggle('apply-disabled', !machineAllowed);
+	  }
+
+	  if (machineTypeRow) {
+		machineTypeRow.classList.toggle('apply-target', machineAllowed);
+		machineTypeRow.classList.toggle('apply-disabled', !machineAllowed);
+	  }
+
+	  if (orderNumberApplyNote) {
+		orderNumberApplyNote.textContent = orderAllowed ? '✔️' : '❌';
+		orderNumberApplyNote.className = `apply-note ${orderAllowed ? 'enabled' : 'disabled'}`;
+	  }
+
+	  if (machineNoApplyNote) {
+		machineNoApplyNote.textContent = machineAllowed ? '✔️' : '❌';
+		machineNoApplyNote.className = `apply-note ${machineAllowed ? 'enabled' : 'disabled'}`;
+	  }
+
+	  if (machineTypeApplyNote) {
+		machineTypeApplyNote.textContent = machineAllowed ? '✔️' : '❌';
+		machineTypeApplyNote.className = `apply-note ${machineAllowed ? 'enabled' : 'disabled'}`;
+	  }
+
+	  if (machineApplyOptionWrap) {
+		machineApplyOptionWrap.classList.toggle('hidden', machineSafe);
+	  }
+	}
+	
+	/**
+	 * Renders full contract UI.
+	 *
+	 * Responsibilities:
+	 * - Populate all contract fields
+	 * - Show/hide booking UI depending on contract type
+	 * - Update remaining hours visual state (green/red)
+	 * - Render ticket worklogs
+	 */
+    function renderContract(data) {
+	  hideContractSelection();
+	  document.getElementById('entryCard').style.display = 'block';
+	  document.getElementById('tableCard').style.display = 'block';
+      document.querySelector('.no-contract-card').style.display = 'none';
+      document.querySelector('.contract-card').style.display = 'block';
+
+      currentCustomer = data.customer ?? '-';
+      currentOrderNumber = data.order_number ?? currentOrderNumber;
+      currentExternalId = currentExternalId || data.external_id || '';
+      currentMachineType = data.machine_type ?? '';
+      currentMachineNo = data.machine_no ?? '';
+      currentValidUntil = data.valid_until ?? null;
+
+      document.getElementById('ticketNumber').textContent = currentTicketId ?? '-';
+      document.getElementById('orderNumber').textContent = data.order_number ?? '-';
+      document.getElementById('customer').textContent = data.customer ?? '-';
+      document.getElementById('contractType').textContent = data.contract_type ?? '-';
+      document.getElementById('validUntil').textContent = data.valid_until ?? '-';
+      document.getElementById('soldHours').textContent = data.sold_hours ?? '-';
+      document.getElementById('bookedHoursInTicket').textContent = data.booked_hours_in_ticket ?? '-';
+      document.getElementById('usedHoursTotal').textContent = data.used_hours_total ?? '-';
+      document.getElementById('remainingHours').textContent = data.remaining_hours ?? '-';
+      document.getElementById('externalId').textContent = currentExternalId || '-';
+	  document.getElementById('machineNo').textContent = data.machine_no ?? '-';
+	  document.getElementById('machineType').textContent = data.machine_type ?? '-';
+	  
+	  updateApplyIndicators();
+	      
+	  const applyBtn = document.getElementById('applyContractBtn');
+      applyBtn.classList.toggle('hidden', !data.order_number);
+
+      const metricsGrid = document.querySelector('.metrics-grid');
+      const entryCard = document.getElementById('entryCard');
+      const tableCard = document.getElementById('tableCard');
+
+      const showBookingCards = [
+        'HF Hotline & Remote Support',
+        'HF basicCare Agreement',
+        'HF basicCare plus Agreement',
+        'HF advancedCare Agreement'
+      ].includes(data.contract_type);
+
+      metricsGrid.style.display = showBookingCards ? 'grid' : 'none';
+      entryCard.style.display = showBookingCards ? 'block' : 'none';
+      tableCard.style.display = showBookingCards ? 'block' : 'none';
+
+      const remainingHoursChip = document.getElementById('remainingHoursChip');
+	  remainingHoursChip.classList.remove('is-good', 'is-bad');
+
+	  if (Number(data.used_hours_total) >= Number(data.sold_hours)) {
+		 remainingHoursChip.classList.add('is-bad');
+	  } else {
+		 remainingHoursChip.classList.add('is-good');
+	  }
+      renderTicketWorklogs(data.ticket_worklogs || []);
+      resizeApp();
+    }
+
+    function renderNoContract(showNoContractCard = true) {
+	  document.querySelector('.contract-card').style.display = 'none';
+	  document.getElementById('entryCard').style.display = 'none';
+	  document.getElementById('tableCard').style.display = 'none';
+
+	  const noContractCard = document.querySelector('.no-contract-card');
+	  if (showNoContractCard) {
+		noContractCard.style.display = 'block';
+		hideContractSelection();
+	  } else {
+		noContractCard.style.display = 'none';
+	  }
+
+	  resizeApp();
+	}
+
+	/**
+	 * Loads contract by order number.
+	 *
+	 * Used when:
+	 * - Order number already exists on ticket
+	 * - After applying contract to ticket
+	 *
+	 * Keeps UI in sync with backend.
+	 */
+    async function loadContractData(orderNumber) {
+	  try {
+		const response = await client.request({
+		  url: `${API_BASE}/contract/${encodeURIComponent(orderNumber)}?ticket_number=${encodeURIComponent(currentTicketId || '')}`,
+		  type: 'GET',
+		  contentType: 'application/json',
+		  headers: { 'ngrok-skip-browser-warning': 'true' }
+		});
+
+		setMessage('');
+		renderContract(response);
+		return true;
+	  } catch (error) {
+		console.error(error);
+		return false;
+	  }
+	}
+	
+	/**
+	 * App entry point.
+	 *
+	 * Flow:
+	 * 1. Load agents
+	 * 2. Read ticket data (ticket id + order number)
+	 * 3. Load organization external ID
+	 * 4. Try to find contract:
+	 *    a) by external ID (preferred)
+	 *    b) fallback: by order number
+	 * 5. If nothing found → show error UI
+	 *
+	 * This ensures best possible contract matching.
+	 */
+    async function init() {
+	  try {
+		await loadAgents();
+
+		const data = await client.get([
+		  'ticket.id',
+		  'ticket.customField:custom_field_360008401018'
+		]);
+
+		currentTicketId = data['ticket.id'];
+		currentOrderNumber = data['ticket.customField:custom_field_360008401018'];
+
+		document.getElementById('ticketNumber').textContent = currentTicketId ?? '-';
+		document.getElementById('orderNumber').textContent = currentOrderNumber ?? '-';
+
+		addPersonRow();
+
+		currentExternalId = await loadTicketOrganizationExternalId();
+		document.getElementById('externalId').textContent = currentExternalId || '-';
+
+		console.log('Current external ID:', currentExternalId);
+
+		if (currentExternalId) {
+		  const foundByExternalId = await loadContractDataByExternalId(currentExternalId);
+
+		  if (foundByExternalId) {
+			return;
+		  }
+		}
+
+		if (currentOrderNumber) {
+		  const foundByOrder = await loadContractData(currentOrderNumber);
+
+		  if (foundByOrder) {
+			return;
+		  }
+		}
+
+		setMessage('No contract found for ticket order number or organization external ID.', 'error');
+		renderNoContract();
+	  } catch (error) {
+		console.error(error);
+		setMessage('Failed to read ticket data.', 'error');
+		renderNoContract();
+	  }
+	}
+
+    document.querySelectorAll('.exportWorklogsBtn').forEach(button => {
+	  button.addEventListener('click', async () => {
+		try {
+		  setMessage('Preparing export...', 'info');
+
+		  const response = await client.request({
+			  url: `${API_BASE}/export/worklogs`,
+			  type: 'GET',
+			  headers: {
+				'ngrok-skip-browser-warning': 'true',
+				'x-export-token': '{{setting.export_token}}'
+			  },
+			  secure: true,
+			  dataType: 'text'
+			});
+
+		  const binary = atob(response);
+		  const bytes = new Uint8Array(binary.length);
+
+		  for (let i = 0; i < binary.length; i++) {
+			bytes[i] = binary.charCodeAt(i);
+		  }
+
+		  const blob = new Blob([bytes], {
+			type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+		  });
+
+		  const url = URL.createObjectURL(blob);
+		  const link = document.createElement('a');
+
+		  link.href = url;
+		  link.download = `worklogs_export_${new Date().toISOString().slice(0, 10)}.xlsx`;
+		  document.body.appendChild(link);
+		  link.click();
+		  link.remove();
+
+		  URL.revokeObjectURL(url);
+		  setMessage('Export downloaded.', 'success');
+		} catch (error) {
+		  console.error(error);
+		  setMessage('Failed to export worklogs.', 'error');
+		}
+	  });
+	});
+
+    document.getElementById('addPersonBtn').addEventListener('click', () => addPersonRow());
+    document.getElementById('applyContractBtn').addEventListener('click', applyContractToTicket);
+	document.addEventListener('change', (event) => {
+	  if (event.target && event.target.id === 'forceMachineApply') {
+		updateApplyIndicators();
+	  }
+	});
+	
+	/**
+	 * Save Worklogs Button: Saves new worklog entries to backend.
+	 *
+	 * Sends:
+	 * - ticket_number
+	 * - order_number
+	 * - customer
+	 * - booked_at (current timestamp!)
+	 * - entries[]
+	 *
+	 * Important:
+	 * booked_at is used by backend to determine:
+	 * - whether entry is before/after import sync cutoff
+	 */
+    document.getElementById('saveBtn').addEventListener('click', async () => {
+      setMessage('');
+
+      const rows = Array.from(document.querySelectorAll('.person-row'));
+      const entries = rows.map(row => ({
+        person: row.querySelector('.person-name').value.trim(),
+        hours: parseFloat(row.querySelector('.person-hours').value || '0'),
+        comment: row.querySelector('.person-comment').value.trim()
+      })).filter(x => x.person && x.hours > 0);
+
+      if (entries.length === 0) {
+        setMessage('Please enter at least one person with hours.', 'error');
+        return;
+      }
+
+      const hasInvalidStep = entries.some(entry => Math.round(entry.hours * 4) !== entry.hours * 4);
+      if (hasInvalidStep) {
+        setMessage('Hours must be entered in 0.25 steps.', 'error');
+        return;
+      }
+
+      try {
+        await client.request({
+          url: `${API_BASE}/worklog`,
+          type: 'POST',
+          contentType: 'application/json',
+          headers: { 'ngrok-skip-browser-warning': 'true' },
+          data: JSON.stringify({
+            ticket_number: currentTicketId,
+            order_number: currentOrderNumber,
+            customer: currentCustomer,
+            booked_at: new Date().toISOString(),
+            entries
+          })
+        });
+
+        setMessage('Hours saved successfully.', 'success');
+        document.getElementById('peopleContainer').innerHTML = '';
+        addPersonRow();
+        await loadContractData(currentOrderNumber);
+      } catch (error) {
+        console.error(error);
+        setMessage(error?.responseJSON?.error || 'Failed to save hours.', 'error');
+      }
+    });
+
+    init();
+  </script>
+</body>
+</html>

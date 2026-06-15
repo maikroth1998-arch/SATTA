@@ -1,0 +1,83 @@
+{
+  "groups": [
+    {
+      "name": "app",
+      "type": "com.grouphive.serviceagreement.config.AppProperties",
+      "sourceType": "com.grouphive.serviceagreement.config.AppProperties"
+    },
+    {
+      "name": "collaboration",
+      "type": "com.grouphive.serviceagreement.config.CollaborationProperties",
+      "sourceType": "com.grouphive.serviceagreement.config.CollaborationProperties"
+    },
+    {
+      "name": "collaboration.oauth",
+      "type": "com.grouphive.serviceagreement.config.CollaborationProperties$OAuth",
+      "sourceType": "com.grouphive.serviceagreement.config.CollaborationProperties",
+      "sourceMethod": "public com.grouphive.serviceagreement.config.CollaborationProperties.OAuth getOauth() "
+    }
+  ],
+  "properties": [
+    {
+      "name": "app.export-token",
+      "type": "java.lang.String",
+      "sourceType": "com.grouphive.serviceagreement.config.AppProperties"
+    },
+    {
+      "name": "collaboration.base-url",
+      "type": "java.lang.String",
+      "sourceType": "com.grouphive.serviceagreement.config.CollaborationProperties"
+    },
+    {
+      "name": "collaboration.element-category-id",
+      "type": "java.lang.String",
+      "sourceType": "com.grouphive.serviceagreement.config.CollaborationProperties"
+    },
+    {
+      "name": "collaboration.is-inactive",
+      "type": "java.lang.Boolean",
+      "sourceType": "com.grouphive.serviceagreement.config.CollaborationProperties"
+    },
+    {
+      "name": "collaboration.limit",
+      "type": "java.lang.Integer",
+      "sourceType": "com.grouphive.serviceagreement.config.CollaborationProperties"
+    },
+    {
+      "name": "collaboration.oauth.client-id",
+      "type": "java.lang.String",
+      "sourceType": "com.grouphive.serviceagreement.config.CollaborationProperties$OAuth"
+    },
+    {
+      "name": "collaboration.oauth.client-secret",
+      "type": "java.lang.String",
+      "sourceType": "com.grouphive.serviceagreement.config.CollaborationProperties$OAuth"
+    },
+    {
+      "name": "collaboration.oauth.grant-type",
+      "type": "java.lang.String",
+      "sourceType": "com.grouphive.serviceagreement.config.CollaborationProperties$OAuth"
+    },
+    {
+      "name": "collaboration.oauth.scope",
+      "type": "java.lang.String",
+      "sourceType": "com.grouphive.serviceagreement.config.CollaborationProperties$OAuth"
+    },
+    {
+      "name": "collaboration.oauth.token-url",
+      "type": "java.lang.String",
+      "sourceType": "com.grouphive.serviceagreement.config.CollaborationProperties$OAuth"
+    },
+    {
+      "name": "collaboration.products-path",
+      "type": "java.lang.String",
+      "sourceType": "com.grouphive.serviceagreement.config.CollaborationProperties"
+    },
+    {
+      "name": "collaboration.quick-filters",
+      "type": "java.util.List<java.lang.String>",
+      "sourceType": "com.grouphive.serviceagreement.config.CollaborationProperties"
+    }
+  ],
+  "hints": []
+}
