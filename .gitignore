@@ -1,0 +1,43 @@
+# Java build files
+*.class
+*.jar
+*.war
+*.ear
+
+# Logs
+*.log
+logs/
+
+# Maven/Gradle directories
+target/
+build/
+
+# IDE-specific files
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+*.sublime-workspace
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Environment variables and sensitive files
+.env
+service_agreement_backend/application.properties
+service_agreement_backend/src/main/resources/application.properties
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+*.swo
+
+# Node.js dependencies (if applicable)
+node_modules/
+
+# Generated files
+out/
+bin/
